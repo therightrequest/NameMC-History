@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NameMC History
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Add a Crafty and Laby API Username table after the Name History table on NameMC profiles using the selected UUID, filter out invalid dates, and sort by date.
 // @author       You
 // @match        https://namemc.com/profile/*
@@ -30,54 +30,64 @@
     const labyApiUrl = `https://laby.net/api/v3/user/${selectedUUID}/names`;
 
 
-    // Function to filter, sort, and populate the table with usernames and dates
-    function populateTable(apiData, tableCard, apiType) {
-        // Adjusting for Crafty API and Laby API data structure
-        const usernames = apiType === 'crafty' ? apiData.usernames : apiData;
+// Function to filter, sort, and populate the table with usernames and dates
+function populateTable(apiData, tableCard, apiType) {
+    // Adjusting for Crafty API and Laby API data structure
+    const usernames = apiType === 'crafty' ? apiData.usernames : apiData;
 
-        const validUsernames = usernames.sort((a, b) => new Date(b.changed_at || 0) - new Date(a.changed_at || 0)); // Sort by date (null dates treated as earliest)
+    const validUsernames = usernames.sort((a, b) => new Date(b.changed_at || 0) - new Date(a.changed_at || 0)); // Sort by date (null dates treated as earliest)
 
-        // Get the table body element
-        const tbody = tableCard.querySelector('tbody');
-        tbody.innerHTML = ''; // Clear previous rows
-        const totalUsernames = validUsernames.length; // Get total number of valid usernames
+    // Get the table body element
+    const tbody = tableCard.querySelector('tbody');
+    tbody.innerHTML = ''; // Clear previous rows
+    const totalUsernames = validUsernames.length; // Get total number of valid usernames
 
-        validUsernames.forEach((usernameData, index) => {
-            let username = apiType === 'crafty' ? usernameData.username : usernameData.name;
+    validUsernames.forEach((usernameData, index) => {
+        let username = apiType === 'crafty' ? usernameData.username : usernameData.name;
 
-            // Special logic for Laby API: rename "-" if the 'hidden' key is missing
-            if (apiType === 'laby' && username === '－' && !usernameData.hidden) {
-                username = '[DELETE FROM LABY DATABASE]';
-            }
+        // Special logic for Laby API: rename "-" if the 'hidden' key is missing
+        if (apiType === 'laby' && username === '－' && !usernameData.hidden) {
+            username = '[DELETE FROM LABY DATABASE]';
+        }
 
-            const available = usernameData.available ? 'Yes' : 'No';
-            const changedAtDate = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleDateString() : '[ORIGINAL NAME]';
-            const changedAtTime = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleTimeString() : '';
-            const displayIndex = totalUsernames - index; // Reverse the index for display
+        const available = usernameData.available ? 'Yes' : 'No';
+        const changedAtDate = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleDateString() : '[ORIGINAL NAME]';
+        const changedAtTime = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleTimeString() : '';
+        const displayIndex = totalUsernames - index; // Reverse the index for display
 
-            // Create a new row for each username
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <tr>
-                    <td width="1" class="text-center fw-bold">${displayIndex}</td>
-                    <td width="100%" style="max-width: 0" class="text-nowrap text-ellipsis">
-                      <a class="" translate="no" href="${(username === '[DELETE FROM LABY DATABASE]' || username === '－') ? '/search?q='+username : '#'}">${username}</a>
-                    </td>
-                    <td width="20%" class="d-none d-lg-table-cell text-end text-nowrap pe-0">
-                      <time datetime="${usernameData.changed_at}" data-type="date">${changedAtDate}</time>
-                    </td>
-                    <td width="1" class="d-none d-lg-table-cell text-center px-1">•</td>
-                    <td width="1" class="d-none d-lg-table-cell text-left text-nowrap p-0">
-                       ${changedAtTime ? `<time datetime="${usernameData.changed_at}" data-type="time">${changedAtTime}</time>` : ""}
-                    </td>
-                    <td class="text-end text-nowrap ps-0">
-                      <a class="copy-button px-1" href="javascript:void(0)" data-clipboard-text="${username}" onclick="return false"><i class="far fa-fw fa-copy"></i></a>
-                    </td>
-                </tr>
-            `;
-            tbody.appendChild(row);
-        });
-    }
+        // Determine the HTML for the username cell
+        let usernameHTML;
+        if (username === '[DELETE FROM LABY DATABASE]' || username === '－') {
+            // Display username as plain text without a link
+            usernameHTML = `<span translate="no">${username === '－' ? "—" : username}</span>`;
+        } else {
+            // Wrap username in an anchor tag with href
+            usernameHTML = `<a class="" translate="no" href="/search?q=${encodeURIComponent(username)}">${username}</a>`;
+        }
+
+        // Create a new row for each username
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <tr>
+                <td width="1" class="text-center fw-bold">${displayIndex}</td>
+                <td width="100%" style="max-width: 0" class="text-nowrap text-ellipsis">
+                  ${usernameHTML}
+                </td>
+                <td width="20%" class="d-none d-lg-table-cell text-end text-nowrap pe-0">
+                  <time datetime="${usernameData.changed_at}" data-type="date">${changedAtDate}</time>
+                </td>
+                <td width="1" class="d-none d-lg-table-cell text-center px-1">•</td>
+                <td width="1" class="d-none d-lg-table-cell text-left text-nowrap p-0">
+                   ${changedAtTime ? `<time datetime="${usernameData.changed_at}" data-type="time">${changedAtTime}</time>` : ""}
+                </td>
+                <td class="text-end text-nowrap ps-0">
+                  <a class="copy-button px-1" href="javascript:void(0)" data-clipboard-text="${username}" onclick="return false"><i class="far fa-fw fa-copy"></i></a>
+                </td>
+            </tr>
+        `;
+        tbody.appendChild(row);
+    });
+}
 
     // Create a new table for Crafty API data (Usernames)
     const craftyTableCard = document.createElement('div');
