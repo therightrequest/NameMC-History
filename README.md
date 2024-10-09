@@ -2,5 +2,5 @@
 Add a Crafty and Laby API Username table after the Name History table on NameMC profiles using the selected UUID, filter out invalid dates, and sort by date. 
 
 
-![image](https://github.com/user-attachments/assets/fd5af9ba-4a26-4922-8561-0294dbb0f493)
-![{23FF8079-B9A5-4FA2-BF97-5B4038F4702E}](https://github.com/user-attachments/assets/9a5ecf4b-ec63-471e-be42-b6e295e1a5bf)
+![{2AE04665-6CD0-4D8F-82F7-D88DE8B28565}](https://github.com/user-attachments/assets/b80b1855-c54e-4bae-9085-954cd4f6bd01)
+![{6485D71E-1972-4DBA-8E1A-BA07BBC4B782}](https://github.com/user-attachments/assets/9948e232-5918-4365-b1f4-6692ea2b2b0e)
