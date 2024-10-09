@@ -2,6 +2,7 @@
 // @name         NameMC History
 // @namespace    http://tampermonkey.net/
 // @version      1.1
+// @description  Add a Crafty and Laby API Username table after the Name History table on NameMC profiles using the selected UUID, filter out invalid dates, and sort by date.
 // @author       You
 // @match        https://namemc.com/profile/*
 // @grant        none
@@ -75,7 +76,7 @@
                       <time datetime="${usernameData.changed_at}" data-type="time">${changedAtTime}</time>
                     </td>
                     <td class="text-end text-nowrap ps-0">
-                      <a class="copy-button px-1" href="javascript:void(0)" data-clipboard-text="${username}" onclick="return false">Copy</a>
+                      <a class="copy-button px-1" href="javascript:void(0)" data-clipboard-text="${username}" onclick="return false"><i class="far fa-fw fa-copy"></i></a>
                     </td>
                 </tr>
             `;
