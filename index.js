@@ -47,7 +47,7 @@ function populateTable(apiData, tableCard, apiType) {
 
         // Special logic for Laby API: rename "-" if the 'hidden' key is missing
         if (apiType === 'laby' && username === '－' && !usernameData.hidden) {
-            username = '[DELETE FROM LABY DATABASE]';
+            username = '[DELETED FROM LABY DATABASE]';
         }
 
         const available = usernameData.available ? 'Yes' : 'No';
@@ -57,7 +57,7 @@ function populateTable(apiData, tableCard, apiType) {
 
         // Determine the HTML for the username cell
         let usernameHTML;
-        if (username === '[DELETE FROM LABY DATABASE]' || username === '－') {
+        if (username === '[DELETED FROM LABY DATABASE]' || username === '－') {
             // Display username as plain text without a link
             usernameHTML = `<span translate="no">${username === '－' ? "—" : username}</span>`;
         } else {
