@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NameMC History
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Add a Crafty and Laby API Username table after the Name History table on NameMC profiles using the selected UUID, filter out invalid dates, and sort by date.
 // @author       You
 // @match        https://namemc.com/profile/*
@@ -35,12 +35,7 @@
         // Adjusting for Crafty API and Laby API data structure
         const usernames = apiType === 'crafty' ? apiData.usernames : apiData;
 
-        const validUsernames = usernames
-            .filter(usernameData => {
-                const changedAt = usernameData.changed_at ? new Date(usernameData.changed_at) : null;
-                return changedAt && changedAt.getTime() !== 0; // Filter out Unix epoch (1/1/1970)
-            })
-            .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at)); // Sort by date (earliest first)
+        const validUsernames = usernames.sort((a, b) => new Date(b.changed_at || 0) - new Date(a.changed_at || 0)); // Sort by date (null dates treated as earliest)
 
         // Get the table body element
         const tbody = tableCard.querySelector('tbody');
@@ -56,8 +51,8 @@
             }
 
             const available = usernameData.available ? 'Yes' : 'No';
-            const changedAtDate = new Date(usernameData.changed_at).toLocaleDateString();
-            const changedAtTime = new Date(usernameData.changed_at).toLocaleTimeString();
+            const changedAtDate = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleDateString() : '[ORIGINAL NAME]';
+            const changedAtTime = usernameData.changed_at ? new Date(usernameData.changed_at).toLocaleTimeString() : '';
             const displayIndex = totalUsernames - index; // Reverse the index for display
 
             // Create a new row for each username
@@ -73,7 +68,7 @@
                     </td>
                     <td width="1" class="d-none d-lg-table-cell text-center px-1">•</td>
                     <td width="1" class="d-none d-lg-table-cell text-left text-nowrap p-0">
-                      <time datetime="${usernameData.changed_at}" data-type="time">${changedAtTime}</time>
+                       ${changedAtTime ? `<time datetime="${usernameData.changed_at}" data-type="time">${changedAtTime}</time>` : ""}
                     </td>
                     <td class="text-end text-nowrap ps-0">
                       <a class="copy-button px-1" href="javascript:void(0)" data-clipboard-text="${username}" onclick="return false"><i class="far fa-fw fa-copy"></i></a>
