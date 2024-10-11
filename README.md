@@ -24,7 +24,7 @@ This UserScript enhances the functionality of NameMC profile pages by adding an 
  
 
 3. After installing a UserScript manager, click on the following link to install the NameMC History UserScript:
-   [Install NameMC History UserScript](#) (Note: Replace '#' with the actual installation link when available)
+   [Install NameMC History UserScript](https://raw.githubusercontent.com/therightrequest/NameMC-History/refs/heads/main/index.js) 
 
 4. Your UserScript manager should prompt you to install the script. Click "Install" to proceed.
 
