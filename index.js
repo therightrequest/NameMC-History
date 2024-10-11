@@ -5,6 +5,8 @@
 // @description  Add a Crafty and Laby API Username table after the Name History table on NameMC profiles using the selected UUID, filter out invalid dates, and sort by date.
 // @author       You
 // @match        https://namemc.com/profile/*
+// @downloadURL  https://raw.githubusercontent.com/therightrequest/NameMC-History/refs/heads/main/index.js
+// @updateURL    https://raw.githubusercontent.com/therightrequest/NameMC-History/refs/heads/main/index.js
 // @grant        none
 // ==/UserScript==
 
