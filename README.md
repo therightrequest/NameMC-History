@@ -17,28 +17,18 @@ This UserScript enhances the functionality of NameMC profile pages by adding an 
 ## Installation
 
 1. Install a UserScript manager for your browser. Here are some popular options:
+   https://www.tampermonkey.net/
+   https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
+   https://violentmonkey.github.io/
+   
+ 
 
-   <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-     <a href="https://www.tampermonkey.net/" target="_blank">
-       <img src="/api/placeholder/220/80" alt="Tampermonkey" style="height: 80px;"/>
-       <br/>Tampermonkey
-     </a>
-     <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/" target="_blank">
-       <img src="/api/placeholder/220/80" alt="Greasemonkey" style="height: 80px;"/>
-       <br/>Greasemonkey
-     </a>
-     <a href="https://violentmonkey.github.io/" target="_blank">
-       <img src="/api/placeholder/220/80" alt="Violentmonkey" style="height: 80px;"/>
-       <br/>Violentmonkey
-     </a>
-   </div>
-
-2. After installing a UserScript manager, click on the following link to install the NameMC History UserScript:
+3. After installing a UserScript manager, click on the following link to install the NameMC History UserScript:
    [Install NameMC History UserScript](#) (Note: Replace '#' with the actual installation link when available)
 
-3. Your UserScript manager should prompt you to install the script. Click "Install" to proceed.
+4. Your UserScript manager should prompt you to install the script. Click "Install" to proceed.
 
-4. The script is now installed and will automatically run on NameMC profile pages.
+5. The script is now installed and will automatically run on NameMC profile pages.
 
 ## Usage
 
